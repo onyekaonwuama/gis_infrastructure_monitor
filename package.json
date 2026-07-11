@@ -17,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/onyekaonwuama/gis_infrastructure_monitor/issues"
   },
-  "homepage": "https://github.com/onyekaonwuama/gis_infrastructure_monitor#readme"
+  "homepage": "https://github.com/onyekaonwuama/gis_infrastructure_monitor#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
 }
