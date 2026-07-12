@@ -7,9 +7,18 @@ const port = 3000;
 //set home page
 app.get('/', (_request: Request, response: Response)=> {
     response.send("GIS Infrastructure is running");});
+//heath check route
+app.get('/health', (_request: Request, response: Response) => {
+    response.json({
+        status: 'healthy',
+        application: 'gis-infrastructure-monitor',
+        timestamp: new Date().toISOString()
+    });
+});
 
-//log port listening
+//listening ports
 app.listen(port, () => {
     console.log("GIS Infrastructure Monitor is running.")
-    console.log(`Open http:localhost:${port}`);
+    console.log(`Application http:localhost:${port}`);
+    console.log(`Health: http;localhost:${port}/health`);
 })
