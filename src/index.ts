@@ -21,8 +21,29 @@ app.get('/health', (_request: Request, response: Response) => {
 
 //get services route
 app.get('/api/services', (_request: Request, response: Response) => {
-    response.json(gisServices)
-    console.log(response.json(gisServices))
+    const geoJson = {
+        type: 'FeatureCollection',
+        features: gisServices.map((service) => ({
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [
+                    service.longitude,
+                    service.latitude
+                ]
+            },
+            properties: {
+                id: service.id,
+                name: service.name,
+                url: service.url,
+                serviceType: service.serviceType,
+                status: service.status,
+                responseTimeMs: service.responseTimeMs
+
+            }
+        }))
+    };
+    response.json(geoJson)
 })
 //listening ports
 app.listen(port, () => {
