@@ -8,8 +8,9 @@ export type GisServiceType =
     | 'feature_service'
     | 'map_service'
     | 'image_service'
+    | 'wms'
 
-
+//interface of services in the infrastructure
 export interface GisService {
     id : string;
     name: string;
