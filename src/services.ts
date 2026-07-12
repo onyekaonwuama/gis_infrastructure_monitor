@@ -2,7 +2,7 @@ import type {GisService} from "./types.js";
 
 export const gisServices: GisService[] = [
     {
-        id: 'map_servcie_01',
+        id: 'map_service_01',
         name: 'Map Service 01',
         url: 'https://example.com/frankfurt/map-service',
         serviceType: 'map_service',
@@ -12,7 +12,7 @@ export const gisServices: GisService[] = [
         responseTimeMs: 180
     },
     {
-        id: 'map_servcie_02',
+        id: 'map_service_02',
         name: 'Map Service 02',
         url: 'https://example.com/berlin/map-service',
         serviceType: 'feature_service',
@@ -22,7 +22,7 @@ export const gisServices: GisService[] = [
         responseTimeMs: 2450
     },
     {
-        id: 'map_servcie_03',
+        id: 'map_service_03',
         name: 'Map Service 03',
         url: 'https://example.com/munich/wms',
         serviceType: 'wms',

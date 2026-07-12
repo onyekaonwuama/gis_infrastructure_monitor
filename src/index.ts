@@ -1,8 +1,11 @@
 import express, {type Request,  type Response } from 'express';
+import { gisServices} from "./services.js";
 
 const app = express();
 
 const port = 3000;
+
+app.use(express.json());
 
 //set home page
 app.get('/', (_request: Request, response: Response)=> {
@@ -16,9 +19,15 @@ app.get('/health', (_request: Request, response: Response) => {
     });
 });
 
+//get services route
+app.get('/api/services', (_request: Request, response: Response) => {
+    response.json(gisServices)
+    console.log(response.json(gisServices))
+})
 //listening ports
 app.listen(port, () => {
     console.log("GIS Infrastructure Monitor is running.")
-    console.log(`Application http:localhost:${port}`);
-    console.log(`Health: http;localhost:${port}/health`);
+    console.log(`Application http://localhost:${port}`);
+    console.log(`Health: http://localhost:${port}/health`);
+    console.log(`Services: http://localhost:${port}/api/services`)
 })
