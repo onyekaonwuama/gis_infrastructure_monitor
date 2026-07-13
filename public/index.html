@@ -16,13 +16,21 @@
         }
 
         header {
-            padding: 1rem 2rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
             background: #172033;
             color: white;
         }
+        header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
 
-        main {
-            padding: 2rem;
+        #map {
+            width: 100%;
+            height: calc(100vh - 70px);
         }
     </style>
 </head>
@@ -32,8 +40,27 @@
     <h1>GIS Infrastructure Monitor</h1>
 </header>
 
-<main>
+<main id="map">
     <p>This is the frontend</p>
 </main>
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<script>
+    const map = L.map('map').setView(
+        [51.1657, 10.4515],
+        6
+    );
+
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
+</script>
 </body>
 </html>
