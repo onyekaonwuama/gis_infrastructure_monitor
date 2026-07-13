@@ -61,6 +61,24 @@
             attribution: '&copy; OpenStreetMap contributors'
         }
     ).addTo(map);
+
+    //fetch services
+    async function loadServices() {
+        const response = await fetch('/api/services');
+        if (!response.ok) {
+            throw new Error(
+                `Unable to load services. HTTP status: ${response.status}`
+            )
+        }
+
+        const geoJson = await response.json();
+
+        console.log('GIS services received:', geoJson);
+    }
+
+    loadServices().catch((error) => {
+        console.error('Failed to load GIS services:', error)
+    })
 </script>
 </body>
 </html>
