@@ -1,11 +1,22 @@
 import express, {type Request,  type Response } from 'express';
+import path from 'node:path';
+import { fileURLToPath } from "node:url";
 import { gisServices} from "./services.js";
+
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirectory = path.dirname(currentFilePath);
 
 const app = express();
 
 const port = 3000;
 
 app.use(express.json());
+
+app.use(
+    express.static(
+        path.join(currentDirectory, '../public')
+    )
+)
 
 //set home page
 app.get('/', (_request: Request, response: Response)=> {
@@ -51,4 +62,4 @@ app.listen(port, () => {
     console.log(`Application http://localhost:${port}`);
     console.log(`Health: http://localhost:${port}/health`);
     console.log(`Services: http://localhost:${port}/api/services`)
-})
+});
