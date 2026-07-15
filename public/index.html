@@ -40,9 +40,7 @@
     <h1>GIS Infrastructure Monitor</h1>
 </header>
 
-<main id="map">
-    <p>This is the frontend</p>
-</main>
+<main id="map"></main>
 
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
@@ -72,6 +70,32 @@
         }
 
         const geoJson = await response.json();
+
+        //display services on the map
+        L.geoJSON(geoJson, {
+            pointToLayer(feature, latlng) {
+                const status = feature.properties.status;
+
+                const statusColors = {
+                    healthy: '#2e7d32',
+                    degraded: '#ed6c02',
+                    down: '#d32f2f',
+                    unknown: '#757575'
+                };
+
+                const color =
+                    statusColors[status] ??
+                    statusColors.unknown;
+
+                return L.circleMarker(latlng, {
+                    radius: 10,
+                    color: '#ffffff',
+                    weight: 2,
+                    fillColor: color,
+                    fillOpacity: 0.9
+                });
+            }
+        }).addTo(map);
 
         console.log('GIS services received:', geoJson);
     }
