@@ -32,6 +32,16 @@
             width: 100%;
             height: calc(100vh - 70px);
         }
+        #message {
+            position: absolute;
+            z-index: 1000;
+            top: 85px;
+            left: 15px;
+            padding: 0.75rem 1rem;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 
@@ -39,7 +49,7 @@
 <header>
     <h1>GIS Infrastructure Monitor</h1>
 </header>
-
+<div id="message">Loading GIS services...</div>
 <main id="map"></main>
 
 <script
@@ -62,64 +72,71 @@
 
     //fetch services
     async function loadServices() {
-        const response = await fetch('/api/services');
-        if (!response.ok) {
-            throw new Error(
-                `Unable to load services. HTTP status: ${response.status}`
-            )
-        }
+        const message = document.getElementById('message');
 
-        const geoJson = await response.json();
+        try {
+            const response = await fetch('/api/services');
 
-        //display services on the map
-        L.geoJSON(geoJson, {
-            pointToLayer(feature, latlng) {
-                const status = feature.properties.status;
-
-                const statusColors = {
-                    healthy: '#2e7d32',
-                    degraded: '#ed6c02',
-                    down: '#d32f2f',
-                    unknown: '#757575'
-                };
-
-                const color =
-                    statusColors[status] ??
-                    statusColors.unknown;
-
-                return L.circleMarker(latlng, {
-                    radius: 10,
-                    color: '#ffffff',
-                    weight: 2,
-                    fillColor: color,
-                    fillOpacity: 0.9
-                });
-            },
-
-            onEachFeature(feature, layer) {
-                const properties = feature.properties;
-
-                const responseTime =
-                    properties.responseTimeMs === null ? 'No response' : `${properties.responseTimeMs} ms`;
-
-                layer.bindPopup(`
-                   <strong>${properties.name}</strong>
-                   <br>
-                   Type: ${properties.serviceType}
-                   <br>
-                   Status: ${properties.status}
-                   <br>
-                   Response time: ${responseTime}
-                `);
+            if (!response.ok) {
+                throw new Error(
+                    `Unable to load services. HTTP status: ${response.status}`
+                );
             }
-        }).addTo(map);
 
-        console.log('GIS services received:', geoJson);
+            const geoJson = await response.json();
+
+            L.geoJSON(geoJson, {
+                pointToLayer(feature, latlng) {
+                    const status = feature.properties.status;
+
+                    const statusColors = {
+                        healthy: '#2e7d32',
+                        degraded: '#ed6c02',
+                        down: '#d32f2f',
+                        unknown: '#757575'
+                    };
+
+                    const color =
+                        statusColors[status] ??
+                        statusColors.unknown;
+
+                    return L.circleMarker(latlng, {
+                        radius: 10,
+                        color: '#ffffff',
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 0.9
+                    });
+                },
+
+                onEachFeature(feature, layer) {
+                    const properties = feature.properties;
+
+                    const responseTime =
+                        properties.responseTimeMs === null
+                            ? 'No response'
+                            : `${properties.responseTimeMs} ms`;
+
+                    layer.bindPopup(`
+          <strong>${properties.name}</strong>
+          <br>
+          Type: ${properties.serviceType}
+          <br>
+          Status: ${properties.status}
+          <br>
+          Response time: ${responseTime}
+        `);
+                }
+            }).addTo(map);
+
+            message.remove();
+        } catch (error) {
+            console.error('Failed to load GIS services:', error);
+            message.textContent = 'Unable to load GIS services.';
+        }
     }
 
-    loadServices().catch((error) => {
-        console.error('Failed to load GIS services:', error)
-    })
+    loadServices();
 </script>
 </body>
 </html>
