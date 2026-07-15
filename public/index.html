@@ -94,6 +94,23 @@
                     fillColor: color,
                     fillOpacity: 0.9
                 });
+            },
+
+            onEachFeature(feature, layer) {
+                const properties = feature.properties;
+
+                const responseTime =
+                    properties.responseTimeMs === null ? 'No response' : `${properties.responseTimeMs} ms`;
+
+                layer.bindPopup(`
+                   <strong>${properties.name}</strong>
+                   <br>
+                   Type: ${properties.serviceType}
+                   <br>
+                   Status: ${properties.status}
+                   <br>
+                   Response time: ${responseTime}
+                `);
             }
         }).addTo(map);
 
